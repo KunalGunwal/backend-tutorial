@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema(
             required :true,
         },
         coverImage : {
-            type:String,
+            type:String, // cloudinary url
         },
         watchHistory : [{
             type : mongoose.Schema.Types.ObjectId,
@@ -56,7 +56,7 @@ userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password, this.password)
 }
  
-userSchema.method.generateAccessToken = function () {
+userSchema.methods.generateAccessToken = function () {
     jwt.sign(
         {
             _id: this._id,
@@ -71,7 +71,7 @@ userSchema.method.generateAccessToken = function () {
     )
 }
 
-userSchema.method.generateRefreshToken = function () {
+userSchema.methods.generateRefreshToken = function () {
     jwt.sign(
         {
             _id: this._id,

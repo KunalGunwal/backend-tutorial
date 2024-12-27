@@ -1,5 +1,5 @@
 import {v2 as cloudinary} from "cloudinary"
-import { response } from "express"
+
 import fs from "fs"    //file system read change file etc
 
 
@@ -9,18 +9,19 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET  // Click 'View API Keys' above to copy your API secret
 });
 
-const uploadOnCloudinary = async (localfilepath) => {
-    try{
-        if(!localfilepath) return null
-        cloudinary.uploader.upload(localfilepath,{
+const uploadOnCloudinary = async (localFilePath) => {
+    try{ 
+        if(!localFilePath) return null
+        const response =  await cloudinary.uploader.upload(localFilePath,{
             resource_type:"auto"
         })
-        console.log("file is uploaded on cloudinary",
-            response.url
-        );
+        // console.log("file is uploaded on cloudinary",
+        //     response.url
+        // );
+        fs.unlinkSync(localFilePath)
         return response;
     } catch(error){
-        fs.unlinkSync(localfilepath)
+        fs.unlinkSync(localFilePath)
         return null;
     }
 }
